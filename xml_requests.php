@@ -82,7 +82,7 @@ class XML_Requests {
 	 */
 	private function paymentsNode($payments) {
 
-		if (is_array($payments[0])) {
+		if (isset($payments[0]) && is_array($payments[0])) {
 
 			foreach ($payments as $key => $payment) {
 		
