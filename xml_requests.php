@@ -55,8 +55,6 @@ class XML_Requests {
 			$this->xml_writer->writeElement('merchantKey', $merchantKey);
 		$this->xml_writer->endElement();
 
-		$this->xml_writer->endElement();	
-
 	}
 
 
