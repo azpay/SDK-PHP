@@ -183,7 +183,7 @@ class XML_Requests {
 
 
 	/**
-	 * Generate XML node of the request Authorize
+	 * Generate the XML node to request the authorization to the transaction
 	 * @param  [type] $merchant   [description]
 	 * @param  [type] $order      [description]
 	 * @param  [type] $payments   [description]
@@ -215,7 +215,28 @@ class XML_Requests {
 
 
 	/**
-	 * Generate XML node of the request Sale
+	 * Generate the XML node to execute a capture of a transaction
+	 * @param  [type] $merchant      [description]
+	 * @param  [type] $transactionId [description]
+	 * @return [type]                [description]
+	 */
+	public function captureXml($merchant, $transactionId) {
+
+		$this->header();
+
+		$this->verificationNode($merchant['id'], $merchant['key']);
+
+		$this->xml_writer->startElement('capture');
+
+			$this->xml_writer->writeElement('transactionId', $transactionId);
+
+		$this->xml_writer->endElement();
+
+	}
+
+
+	/**
+	 * Generate the XML node to request a direct sale (authorization and capture)
 	 * @param  [type] $merchant [description]
 	 * @param  [type] $order    [description]
 	 * @param  [type] $payments [description]
