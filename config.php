@@ -144,5 +144,11 @@ class Config {
     '12' => 'Boleto Gerado'
   );
 
+  public static $RESPONSE = array(
+    'AUTHORIZED' => 3,
+    'APPROVED' => 8,
+    'GENERATED' => 12
+  );
+
 }
 ?>
