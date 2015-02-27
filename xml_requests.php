@@ -95,15 +95,12 @@ class XML_Requests {
 					$this->xml_writer->writeElement('country', $payment['country']);
 					$this->xml_writer->writeElement('numberOfPayments', $payment['numberOfPayments']);
 					$this->xml_writer->writeElement('groupNumber', $payment['groupNumber']);
-					$this->xml_writer->writeElement('flag', $payment['flag']);
-					$this->xml_writer->writeElement('cardHolder', $payment['cardHolder']);
-					$this->xml_writer->writeElement('cardNumber', Utils::formatNumber($payment['cardNumber']));
-					$this->xml_writer->writeElement('cardSecurityCode', Utils::formatNumber($payment['cardSecurityCode']));
-					$this->xml_writer->writeElement('cardExpirationDate', Utils::formatNumber($payment['cardExpirationDate']));
-					$this->xml_writer->writeElement('saveCreditCard', $payment['saveCreditCard']);
-					$this->xml_writer->writeElement('generateToken', $payment['generateToken']);
-					$this->xml_writer->writeElement('departureTax', $payment['departureTax']);
-					$this->xml_writer->writeElement('softDescriptor', $payment['softDescriptor']);
+
+					if (isset($payment['tokenCard']) && !empty($payment['tokenCard'])) {
+						$this->tokenCardXML($payment['tokenCard']);
+					} else {
+						$this->cardXML($payment);
+					}					
 
 				$this->xml_writer->endElement();
 			}
@@ -119,15 +116,12 @@ class XML_Requests {
 				$this->xml_writer->writeElement('country', $payments['country']);
 				$this->xml_writer->writeElement('numberOfPayments', $payments['numberOfPayments']);
 				$this->xml_writer->writeElement('groupNumber', $payments['groupNumber']);
-				$this->xml_writer->writeElement('flag', $payments['flag']);
-				$this->xml_writer->writeElement('cardHolder', $payments['cardHolder']);
-				$this->xml_writer->writeElement('cardNumber', Utils::formatNumber($payments['cardNumber']));
-				$this->xml_writer->writeElement('cardSecurityCode', Utils::formatNumber($payments['cardSecurityCode']));
-				$this->xml_writer->writeElement('cardExpirationDate', Utils::formatNumber($payments['cardExpirationDate']));
-				$this->xml_writer->writeElement('saveCreditCard', $payments['saveCreditCard']);
-				$this->xml_writer->writeElement('generateToken', $payments['generateToken']);
-				$this->xml_writer->writeElement('departureTax', $payments['departureTax']);
-				$this->xml_writer->writeElement('softDescriptor', $payments['softDescriptor']);
+
+				if (isset($payments['tokenCard']) && !empty($payments['tokenCard'])) {
+					$this->tokenCardXML($payments['tokenCard']);
+				} else {
+					$this->cardXML($payments);
+				}	
 
 			$this->xml_writer->endElement();
 		}
@@ -216,15 +210,16 @@ class XML_Requests {
 
 	/**
 	 * Generate the XML node to execute a capture of a transaction
-	 * @param  [type] $merchant      [description]
+	 * @param  [type] $merchant_id   [description]
+	 * @param  [type] $merchant_key  [description]
 	 * @param  [type] $transactionId [description]
 	 * @return [type]                [description]
 	 */
-	public function captureXml($merchant, $transactionId) {
+	public function captureXml($merchant_id, $merchant_key, $transactionId) {
 
 		$this->header();
 
-		$this->verificationNode($merchant['id'], $merchant['key']);
+		$this->verificationNode($merchant_id, $merchant_key);
 
 		$this->xml_writer->startElement('capture');
 
@@ -330,6 +325,38 @@ class XML_Requests {
 			$this->xml_writer->writeElement('customField', $options['customField']);
 
 		$this->xml_writer->endElement();
+
+	}
+
+
+	/**
+	 * Mount the XML of the Card
+	 * @param  [type] $card [description]
+	 * @return [type]       [description]
+	 */
+	public function cardXML($card) {
+
+		$this->xml_writer->writeElement('flag', $card['flag']);
+		$this->xml_writer->writeElement('cardHolder', $card['cardHolder']);
+		$this->xml_writer->writeElement('cardNumber', Utils::formatNumber($card['cardNumber']));
+		$this->xml_writer->writeElement('cardSecurityCode', Utils::formatNumber($card['cardSecurityCode']));
+		$this->xml_writer->writeElement('cardExpirationDate', Utils::formatNumber($card['cardExpirationDate']));					
+		$this->xml_writer->writeElement('saveCreditCard', $card['saveCreditCard']);
+		$this->xml_writer->writeElement('generateToken', $card['generateToken']);
+		$this->xml_writer->writeElement('departureTax', $card['departureTax']);
+		$this->xml_writer->writeElement('softDescriptor', $card['softDescriptor']);
+
+	}
+
+
+	/**
+	 * Return the Token Card node
+	 * @param  [type] $token [description]
+	 * @return [type]        [description]
+	 */
+	public function tokenCardXML($token) {
+
+		$this->xml_writer->writeElement('tokenCard', $token);
 
 	}
 

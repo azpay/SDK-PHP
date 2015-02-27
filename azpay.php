@@ -53,7 +53,8 @@ class AZPay {
 		'saveCreditCard' => 'true',
 		'generateToken' => 'false',
 		'departureTax' => '0',
-		'softDescriptor' => ''
+		'softDescriptor' => '',
+		'tokenCard' => ''
 	);
 
 	# Boleto
@@ -144,11 +145,8 @@ class AZPay {
 
 
 	/**
-	 * Request Authorize
+	 * Request authorization to complete the transaction
 	 * with authorization
-	 * @param  [type] $order   [description]
-	 * @param  [type] $payment [description]
-	 * @param  [type] $billing [description]
 	 * @return [type]          [description]
 	 */
 	public function authorize() {
@@ -156,6 +154,21 @@ class AZPay {
 		$requests = new XML_Requests();
 		
 		$requests->authorizeXml($this->merchant, $this->config_order, $this->config_card_payments, $this->config_billing, $this->config_options);
+		$xml = $requests->output();
+
+		$this->execute($xml);
+
+	}
+
+	/**
+	 * Request the capture of the transaction, after authorization
+	 * @return [type] [description]
+	 */
+	public function capture($merchant_id, $merchant_key, $transactionId) {
+
+		$requests = new XML_Requests();
+		
+		$requests->captureXml($merchant_id, $merchant_key, $transactionId);
 		$xml = $requests->output();
 
 		$this->execute($xml);
