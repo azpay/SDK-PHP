@@ -144,10 +144,42 @@ class Config {
     '12' => 'Boleto Gerado'
   );
 
+
+  /**
+   * Code responses by flag
+   * @var array
+   */
   public static $RESPONSE = array(
-    'AUTHORIZED' => 3,
-    'APPROVED' => 8,
-    'GENERATED' => 12
+    'CREATED'         => 0,
+    'AUTHENTICATED'   => 1,
+    'UNAUTHENTICATED' => 2,
+    'AUTHORIZED'      => 3,
+    'UNAUTHORIZED'    => 4,
+    'CANCELLING'      => 5,
+    'CANCELLED'       => 6,
+    'CAPTURING'       => 7,
+    'APPROVED'        => 8,
+    'UNAPPROVED'      => 9,
+    'SCHEDULED'       => 10,
+    'GENERATED'       => 12
+  );
+
+  /**
+   * Code operations by flag
+   * @var array
+   */
+  public static $OPERATION = array(
+    'AUTHORIZE' => 1,
+    'CAPTURE'   => 2,
+    'SALE'      => 3,
+    'CANCEL'    => 5,
+    'REPORT'    => 6,
+    'REBILL'    => 7,
+    'BOLETO'    => 8,
+    'AUTH'      => 9,
+    'PAGSEGURO' => 10,
+    'PAYPAL'    => 11,
+    'TRANSFER'  => 12,
   );
 
 }
