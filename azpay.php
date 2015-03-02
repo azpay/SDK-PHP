@@ -164,11 +164,11 @@ class AZPay {
 	 * Request the capture of the transaction, after authorization
 	 * @return [type] [description]
 	 */
-	public function capture($merchant_id, $merchant_key, $transactionId) {
+	public function capture($transactionId) {
 
 		$requests = new XML_Requests();
 		
-		$requests->captureXml($merchant_id, $merchant_key, $transactionId);
+		$requests->captureXml($this->merchant['id'], $this->merchant['key'], $transactionId);
 		$xml = $requests->output();
 
 		$this->execute($xml);
