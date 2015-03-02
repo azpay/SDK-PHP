@@ -88,6 +88,10 @@ class XML_Requests {
 		
 				$this->xml_writer->startElement('payment');
 
+					if (isset($payment['tokenCard']) && !empty($payment['tokenCard'])) {
+						$this->tokenCardXML($payment['tokenCard']);
+					}
+
 					$this->xml_writer->writeElement('acquirer', $payment['acquirer']);
 					$this->xml_writer->writeElement('method', $payment['method']);
 					$this->xml_writer->writeElement('amount', Utils::formatNumber($payment['amount']));
@@ -96,11 +100,9 @@ class XML_Requests {
 					$this->xml_writer->writeElement('numberOfPayments', $payment['numberOfPayments']);
 					$this->xml_writer->writeElement('groupNumber', $payment['groupNumber']);
 
-					if (isset($payment['tokenCard']) && !empty($payment['tokenCard'])) {
-						$this->tokenCardXML($payment['tokenCard']);
-					} else {
+					if (!isset($payment['tokenCard']) || empty($payment['tokenCard'])) {
 						$this->cardXML($payment);
-					}					
+					}
 
 				$this->xml_writer->endElement();
 			}
@@ -108,6 +110,10 @@ class XML_Requests {
 		} else {
 
 			$this->xml_writer->startElement('payment');
+
+				if (isset($payments['tokenCard']) && !empty($payments['tokenCard'])) {
+					$this->tokenCardXML($payments['tokenCard']);
+				}
 
 				$this->xml_writer->writeElement('acquirer', $payments['acquirer']);
 				$this->xml_writer->writeElement('method', $payments['method']);
@@ -117,11 +123,9 @@ class XML_Requests {
 				$this->xml_writer->writeElement('numberOfPayments', $payments['numberOfPayments']);
 				$this->xml_writer->writeElement('groupNumber', $payments['groupNumber']);
 
-				if (isset($payments['tokenCard']) && !empty($payments['tokenCard'])) {
-					$this->tokenCardXML($payments['tokenCard']);
-				} else {
+				if (!isset($payments['tokenCard']) || empty($payments['tokenCard'])) {
 					$this->cardXML($payments);
-				}	
+				}
 
 			$this->xml_writer->endElement();
 		}
