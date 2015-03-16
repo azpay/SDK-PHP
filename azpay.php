@@ -34,7 +34,7 @@ class AZPay {
 	 */
 	public $config_order = array(
 		'reference' => '',
-		'totalAmount' => ''
+		'totalAmount' => '0000'
 	);
 
 	/**
@@ -42,16 +42,16 @@ class AZPay {
 	 * @var array
 	 */
 	public $config_billing = array(
-		'customerIdentity' => '1',
-		'name' => 'Fulano de Tal',
-		'address' => 'Av. Federativa, 230',
-		'address2' => '10 Andar',
-		'city' => 'Mogi das Cruzes',
-		'state' => 'SP',
-		'postalCode' => '20031-170',
+		'customerIdentity' => '',
+		'name' => '',
+		'address' => '',
+		'address2' => '',
+		'city' => '',
+		'state' => '',
+		'postalCode' => '',
 		'country' => 'BR',
-		'phone' => '21 4009-9400',
-		'email' => 'fulanodetal@email.com'
+		'phone' => '',
+		'email' => ''
 	);
 
 	/**
@@ -59,18 +59,18 @@ class AZPay {
 	 * @var array
 	 */
 	public $config_card_payments = array(
-		'acquirer' => '1',
-		'method' => '1',
-		'amount' => 'R$ 0,00',
-		'currency' => 986,
+		'acquirer' => '',
+		'method' => '',
+		'amount' => '0000',
+		'currency' => '986',
 		'country' => 'BRA',
 		'numberOfPayments' => '1',
 		'groupNumber' => '0',
-		'flag' => 'mastercard',
+		'flag' => '',
 		'cardHolder' => '',
 		'cardNumber' => '',
-		'cardSecurityCode' => '123',
-		'cardExpirationDate' => '2018-05',
+		'cardSecurityCode' => '',
+		'cardExpirationDate' => '',
 		'saveCreditCard' => 'true',
 		'generateToken' => 'false',
 		'departureTax' => '0',
@@ -87,7 +87,7 @@ class AZPay {
 		'expire' => '',
 		'nrDocument' => '',
 		'amount' => '000',
-		'currency' => 986,
+		'currency' => '986',
 		'country' => 'BRA',
 		'instructions' => ''
 	);
@@ -364,11 +364,11 @@ class AZPay {
             default:
                 if ($meta['http_code'] >= 400 && $meta['http_code'] <= 499) {
                     throw new AZPay_ClientError($response);
-                } elseif ($meta['http_code'] >= 500 && $meta['http_code'] <= 599)
-                    throw new AZPay_ServerError($response); elseif (!isset($meta['http_code']) || $meta['http_code'] >= 600) {
+                } elseif ($meta['http_code'] >= 500 && $meta['http_code'] <= 599) {
+                	throw new AZPay_ServerError($response);
+                } elseif (!isset($meta['http_code']) || $meta['http_code'] >= 600) {
                     throw new AZPay_UnknownResponse($response);
                 }
-
         }
 
 	}

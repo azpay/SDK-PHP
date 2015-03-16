@@ -340,7 +340,7 @@ class XML_Requests {
 	 */
 	public function cardXML($card) {
 
-		$this->xml_writer->writeElement('flag', $card['flag']);
+		$this->xml_writer->writeElement('flag', Utils::formatSlug($card['flag']));
 		$this->xml_writer->writeElement('cardHolder', $card['cardHolder']);
 		$this->xml_writer->writeElement('cardNumber', Utils::formatNumber($card['cardNumber']));
 		$this->xml_writer->writeElement('cardSecurityCode', Utils::formatNumber($card['cardSecurityCode']));
