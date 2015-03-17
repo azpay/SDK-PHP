@@ -58,8 +58,39 @@ $azpay->config_options = array(
 	'customField' => ''
 );
 
+/**
+ * Generates Boleto
+ */
 //$azpay->boleto();
+
+/**
+ * Request authorization to transaction
+ */
+//$azpay->authorize();
+
+/**
+ * Execute capture of transaction
+ */
+//$azpay->capture();
+
+/**
+ * Execute authorization and capture (direct sale), to transaction
+ */
+//$azpay->sale();
+
+/**
+ * Cancel a transaction
+ */
+//$azpay->cancel($tid);
+
+/**
+ * Check a transaction status by TID
+ */
 $azpay->report('BCEF86DB-841F-079B-5505-6F97E14BA284');
+
+/**
+ * Obtain response
+ */
 $xml = $azpay->response();
 print_r($xml);
 
