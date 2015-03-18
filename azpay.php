@@ -125,7 +125,14 @@ class AZPay {
 	 * Errors Code
 	 * @var [type]
 	 */
-	public $curl_error_code;	
+	public $curl_error_code;
+
+	/**
+	 * Set timeout to cURL
+	 * default = 5s
+	 * @var [type]
+	 */
+	public $curl_timeout = 5;
 
 	/**
 	 * Error flag
@@ -170,6 +177,8 @@ class AZPay {
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+		curl_setopt($ch, CURLOPT_TIMEOUT, $this->curl_timeout);
 
 		$this->curl_response = curl_exec($ch);
 		$this->curl_response_meta = curl_getinfo($ch);
