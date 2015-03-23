@@ -2,7 +2,7 @@
 /**
  * AZPay SDK
  * 
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Gabriel Guerreiro
  * Copyright AZClick
  * 
@@ -14,123 +14,209 @@ include 'xml_requests.php';
 
 class AZPay {
 
+
 	/**
 	 * VERSION
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '1.1.0';
 
 	/**
 	 * Client Key and Client ID
 	 * @var array
 	 */
 	public $merchant = array(
-		'id' => '',
-		'key' => ''
+		'id' 	=> '',
+		'key' 	=> ''
 	);
+
 
 	/**
 	 * Order Details
 	 * @var array
 	 */
 	public $config_order = array(
-		'reference' => '',
-		'totalAmount' => '0000'
+		'reference' 	=> '',
+		'totalAmount' 	=> '0000'
 	);
+
+
+	/**
+	 * Rebill configuration
+	 * @var array
+	 */
+	public $config_rebill = array(
+		'period' 	=> '1',
+		'frequency'	=> '15',
+		'dateStart'	=> '2014-06-15',
+		'dateEnd' 	=> '2014-07-24'
+	);
+
 
 	/**
 	 * Billing Details
 	 * @var array
 	 */
 	public $config_billing = array(
-		'customerIdentity' => '',
-		'name' => '',
-		'address' => '',
-		'address2' => '',
-		'city' => '',
-		'state' => '',
-		'postalCode' => '',
-		'country' => 'BR',
-		'phone' => '',
-		'email' => ''
+		'customerIdentity' 	=> '',
+		'name' 				=> '',
+		'address' 			=> '',
+		'address2' 			=> '',
+		'city' 				=> '',
+		'state' 			=> '',
+		'postalCode' 		=> '',
+		'country' 			=> 'BR',
+		'phone' 			=> '',
+		'email' 			=> ''
 	);
+	
 
 	/**
 	 * Creditcard data
 	 * @var array
 	 */
 	public $config_card_payments = array(
-		'acquirer' => '',
-		'method' => '',
-		'amount' => '0000',
-		'currency' => '986',
-		'country' => 'BRA',
-		'numberOfPayments' => '1',
-		'groupNumber' => '0',
-		'flag' => '',
-		'cardHolder' => '',
-		'cardNumber' => '',
-		'cardSecurityCode' => '',
-		'cardExpirationDate' => '',
-		'saveCreditCard' => 'true',
-		'generateToken' => 'false',
-		'departureTax' => '0',
-		'softDescriptor' => '',
-		'tokenCard' => ''
+		'acquirer' 				=> '',
+		'method' 				=> '',
+		'amount' 				=> '0000',
+		'currency' 				=> '986',
+		'country' 				=> 'BRA',
+		'numberOfPayments' 		=> '1',
+		'groupNumber' 			=> '0',
+		'flag' 					=> '',
+		'cardHolder' 			=> '',
+		'cardNumber' 			=> '',
+		'cardSecurityCode' 		=> '',
+		'cardExpirationDate' 	=> '',
+		'saveCreditCard' 		=> 'true',
+		'generateToken' 		=> 'false',
+		'departureTax' 			=> '0',
+		'softDescriptor' 		=> '',
+		'tokenCard' 			=> ''
 	);
+
 
 	/**
 	 * Boleto configuration
 	 * @var array
 	 */
 	public $config_boleto = array(
-		'acquirer' => '10',
-		'expire' => '',
-		'nrDocument' => '',
-		'amount' => '000',
-		'currency' => '986',
-		'country' => 'BRA',
-		'instructions' => ''
+		'acquirer'	 	=> '10',
+		'expire' 		=> '',
+		'nrDocument' 	=> '',
+		'amount'		=> '0000',
+		'currency' 		=> '986',
+		'country' 		=> 'BRA',
+		'instructions' 	=> ''
 	);
+
+
+	/**
+	 * PagSeguro configuration
+	 * @var array
+	 */
+	public $config_pagseguro = array(
+		'amount' 	=> '0000',
+		'currency' 	=> '986',
+		'country' 	=> 'BRA'
+	);
+
+
+	/**
+	 * PagSeguro Creditcard configuration
+	 * @var array
+	 */
+	public $config_pagseguro_checkout = array(
+		'method' 				=> '',
+		'amount' 				=> '0000',
+		'currency' 				=> '986',
+		'country' 				=> 'BRA',
+		'numberOfPayments' 		=> '1',
+		'flag' 					=> '',
+		'cardHolder' 			=> '',
+		'cardNumber' 			=> '',
+		'cardSecurityCode' 		=> '',
+		'cardExpirationDate' 	=> ''
+	);
+
+	/**
+	 * Billing Details to PagSeguro
+	 * @var array
+	 */
+	public $config_pagseguro_checkout_billing = array(
+		'customerIdentity' 	=> '',
+		'name' 				=> '',
+		'address' 			=> '',
+		'address2' 			=> '',
+		'city' 				=> '',
+		'state' 			=> '',
+		'postalCode'		=> '',
+		'country' 			=> 'BR',
+		'phone' 			=> '',
+		'email' 			=> '',
+		'birthDate' 		=> '',
+		'cpf' 				=> ''
+	);
+
+
+	/**
+	 * PayPal configuration
+	 * @var array
+	 */
+	public $config_paypal = array(
+		'amount' 	=> '0000',
+		'currency' 	=> '986',
+		'country' 	=> 'BRA'
+	);
+
+
+	/**
+	 * Online Debit configuration
+	 * @var array
+	 */
+	public $config_online_debit = array(
+		'acquirer' 	=> ''
+	);
+
 
 	/**
 	 * Options extra
 	 * @var array
 	 */
 	public $config_options = array(
-		'urlReturn' => '',
-		'fraud' => 'false',
-		'customField' => ''
+		'urlReturn' 	=> '',
+		'fraud'		 	=> 'false',
+		'customField' 	=> ''
 	);
 
 
 	/**
 	 * Reponse
-	 * @var [type]
+	 * @var String
 	 */
-	public $curl_response;
+	public $curl_response = null;
 
 	/**
 	 * Meta data
-	 * @var [type]
+	 * @var String
 	 */
-	public $curl_response_meta;
+	public $curl_response_meta = null;
 
 	/**
 	 * Errors
-	 * @var [type]
+	 * @var String
 	 */
-	public $curl_error;	
+	public $curl_error = null;	
 
 	/**
 	 * Errors Code
-	 * @var [type]
+	 * @var int
 	 */
-	public $curl_error_code;
+	public $curl_error_code = 0;
 
 	/**
 	 * Set timeout to cURL
 	 * default = 5s
-	 * @var [type]
+	 * @var int
 	 */
 	public $curl_timeout = 5;
 
@@ -141,6 +227,13 @@ class AZPay {
 	public $error = false;
 
 	/**
+	 * Message Error
+	 * from AZPay
+	 * @var null
+	 */
+	public $message_error = null;
+
+	/**
 	 * Flag to execute Exceptions
 	 * @var boolean
 	 */
@@ -149,10 +242,10 @@ class AZPay {
 
 
 	/**
-	 * Construct class
+	 * Construct Class
 	 * 
-	 * @param [type] $merchant_id  [Client ID]
-	 * @param [type] $merchant_key [Client Key]
+	 * @param [String] $merchant_id  [Client ID]
+	 * @param [String] $merchant_key [Client Key]
 	 */
 	function __construct($merchant_id, $merchant_key) {
 
@@ -165,9 +258,10 @@ class AZPay {
 
 
 	/**
-	 * Execute request
+	 * Execute Request
 	 * 
-	 * @return [type] [execute cUrl request]
+	 * @param  [String] $xml [XML]
+	 * @return [void]
 	 */
 	public function execute($xml) {		
 
@@ -202,14 +296,16 @@ class AZPay {
 
 
 	/**
-	 * Return the cUrl response 
-	 * 
-	 * @return [type] [description]
+	 * Return the cUrl response
+	 * from AZPay
+	 * 	 
+	 * @return [XML Object] if [Reponse]
+	 * @return [String] if [Error]
 	 */
 	public function response() {
 
 		// If no errors, return XML parsed
-		if ($this->error == false) {
+		if ($this->curl_error === null) {
 			
 			$xml = simplexml_load_string($this->curl_response);
 
@@ -220,14 +316,52 @@ class AZPay {
 			return $this->curl_error;
 
 		}
-
 	}
 
 
 	/**
-	 * Request authorization to complete the transaction
+	 * Get AZPay errors response
+	 * 
+	 * @return [array] data from errors
+	 */
+	public function responseError() {
+
+		$xml = simplexml_load_string($this->curl_response);
+		$json = json_decode(json_encode($xml));
+
+		$response = array(
+			'status_code' 		=> $json->status->code,
+			'status_message' 	=> $json->status->message,
+			'error_code' 		=> $json->result->error->code,
+			'error_action' 		=> $json->result->error->action,
+			'error_details'		=> $json->result->error->details,
+			'error_moreInfo'	=> $json->result->error->moreInfo,
+			'error_message'		=> Config::$ERROR_MESSAGE[$json->result->error->code], // Message error to view
+		);
+
+		// 101 - XML Error
+		if ($json->result->error->code != '101' && $json->result->error->code != 101) {
+			$response['message_acquirer'] = $json->result->error->message->acquirer;
+			$response['error_acquirer'] = $json->result->error->message->errorAcquirer;
+			$response['timestamp'] = $json->result->error->message->timestamp;
+		}
+
+		return $response;
+	}
+
+
+	/**
+	 * Request authorization
+	 * to complete the transaction
+	 *
+	 * Require:
+	 * 	- merchant
+	 * 	- config_order
+	 * 	- config_card_payments
+	 * 	- config_billing
+	 * 	- config_options
 	 * 	 
-	 * @return [type]          [description]
+	 * @return [void]
 	 */
 	public function authorize() {
 
@@ -237,14 +371,19 @@ class AZPay {
 		$xml = $requests->output();
 
 		$this->execute($xml);
-
 	}
+
 
 	/**
 	 * Request the capture of the transaction
-	 * after the authorization request, to payment validation
-	 * 
-	 * @return [type] [description]
+	 * after the authorization request
+	 * to payment validation
+	 *
+	 * Require:
+	 * 	- merchant
+	 * 	
+	 * @param  [String] $transactionId [TID of AZPay transaction]
+	 * @return [void]
 	 */
 	public function capture($transactionId) {
 
@@ -254,15 +393,21 @@ class AZPay {
 		$xml = $requests->output();
 
 		$this->execute($xml);
-
 	}
 
 
 	/**
 	 * Request Sale
 	 * without a pre authorization
+	 *
+	 * Require:
+	 *  - merchant
+	 *  - config_order
+	 *  - config_card_payments
+	 *  - config_billing
+	 *  - config_options
 	 * 
-	 * @return [String] [description]
+	 * @return [void]
 	 */
 	public function sale() {
 
@@ -272,67 +417,201 @@ class AZPay {
 		$xml = $requests->output();
 
 		$this->execute($xml);
-
 	}
 
 
 	/**
-	 * Request Report
-	 * to check the transaction status
+	 * Request Rebill
+	 *
+	 * Require:
+	 *  - merchant
+	 *  - config_order
+	 *  - config_card_payments
+	 *  - config_billing
+	 *  - config_options
+	 *  - config_rebill
 	 * 
-	 * @param  [type] $tid [TID]
-	 * @return [type]      [description]
+	 * @return [void]
 	 */
-	public function report($tid) {
+	public function rebill() {
 
 		$requests = new XML_Requests();
 		
-		$requests->reportXml($this->merchant, $tid);
+		$requests->creditcardRebillXml($this->merchant, $this->config_order, $this->config_card_payments, $this->config_billing, $this->config_options, $this->config_rebill);
 		$xml = $requests->output();
 
 		$this->execute($xml);
-
 	}
 
 
 	/**
-	 * Request Cancel
+	 * Request a transaction status report
+	 *
+	 * Require:
+	 * 	- merchant
 	 * 
-	 * @param  [type] $tid [description]
-	 * @return [type]      [description]
+	 * @param  [String] $transactionId [TID of AZPay transaction]
+	 * @return [void]      [description]
 	 */
-	public function cancel($tid) {
+	public function report($transactionID) {
 
 		$requests = new XML_Requests();
 		
-		$requests->cancelXml($this->merchant, $tid);
+		$requests->reportXml($this->merchant, $transactionID);
 		$xml = $requests->output();
 
 		$this->execute($xml);
+	}
 
+
+	/**
+	 * Request a Transaction cancel
+	 *
+	 * Require:
+	 * 	- merchant
+	 * 
+	 * @param  [String] $transactionID [TID of AZPay transaction]
+	 * @return [void]
+	 */
+	public function cancel($transactionID) {
+
+		$requests = new XML_Requests();
+		
+		$requests->cancelXml($this->merchant, $transactionID);
+		$xml = $requests->output();
+
+		$this->execute($xml);
 	}
 
 
 	/**
 	 * Request Boleto
-	 * 
-	 * @return [type] [description]
+	 *
+	 * Require: 
+	 * 	- merchant
+	 *  - config_order
+	 *  - config_boleto
+	 *  - config_billing
+	 *  - config_options
+	 *
+	 * To Rebill require:
+	 * 	- config_rebill
+	 *
+	 * @param  [boolean] $rebill [Flag to enable rebill]
+	 * @return [void]
 	 */
-	public function boleto() {
+	public function boleto($rebill = false) {
 
 		$requests = new XML_Requests();
 		
-		$requests->boletoXml($this->merchant, $this->config_order, $this->config_boleto, $this->config_billing, $this->config_options);
+		if ($rebill) {
+			$requests->boletoRebillXml($this->merchant, $this->config_order, $this->config_boleto, $this->config_billing, $this->config_options, $this->config_rebill);
+		} else {
+			$requests->boletoXml($this->merchant, $this->config_order, $this->config_boleto, $this->config_billing, $this->config_options);
+		}
+		
 		$xml = $requests->output();
 
 		$this->execute($xml);
-
 	}
+
+
+	/**
+	 * PagSeguro
+	 *
+	 * Require:
+	 *  - merchant
+	 *  - config_order
+	 *  - config_pagseguro
+	 *  - config_billing
+	 *  - config_options
+	 * 
+	 * @return [void]
+	 */
+	public function pagseguro() {
+
+		$requests = new XML_Requests();
+		
+		$requests->pagseguroXml($this->merchant, $this->config_order, $this->config_pagseguro, $this->config_billing, $this->config_options);
+		$xml = $requests->output();
+
+		$this->execute($xml);
+	}
+
+
+	/**
+	 * PagSeguro Checkout
+	 *
+	 * Require:
+	 *  - merchant
+	 *  - config_order
+	 *  - config_pagseguro_checkout
+	 *  - config_pagseguro_billing
+	 *  - config_options
+	 * 
+	 * @return [void]
+	 */
+	public function pagseguro_checkout() {
+
+		$requests = new XML_Requests();
+		
+		$requests->pagseguroCheckoutXml($this->merchant, $this->config_order, $this->config_pagseguro_checkout, $this->config_pagseguro_checkout_billing, $this->config_options);
+		$xml = $requests->output();
+
+		$this->execute($xml);
+	}
+
+
+	/**
+	 * PayPal Checkout
+	 *
+	 * Require:
+	 *  - merchant
+	 *  - config_order
+	 *  - config_paypal
+	 *  - config_billing
+	 *  - config_options
+	 * 
+	 * @return [void]
+	 */
+	public function paypal() {
+
+		$requests = new XML_Requests();
+		
+		$requests->paypalXml($this->merchant, $this->config_order, $this->config_paypal, $this->config_billing, $this->config_options);
+		$xml = $requests->output();
+
+		$this->execute($xml);
+	}
+
+
+	/**
+	 * Online Debit
+	 *
+	 * Require:
+	 *  - merchant
+	 *  - config_order
+	 *  - config_pagseguro_checkout
+	 *  - config_pagseguro_billing
+	 *  - config_options
+	 * 
+	 * @return [void]
+	 */
+	public function online_debit() {
+
+		$requests = new XML_Requests();
+		
+		$requests->onlineDebitXml($this->merchant, $this->config_order, $this->config_online_debit, $this->config_billing, $this->config_options);
+		$xml = $requests->output();
+
+		$this->execute($xml);
+	}
+
 
 	/**
 	 * Check error exceptions
 	 * 
-	 * @return [void] [description]
+	 * @return [void]
 	 */
 	private function checkErrors() {
 
@@ -362,7 +641,7 @@ class AZPay {
                 throw new AZPay_MethodNotAllowed($response);
                 break;
             case 409:
-                throw new AZPay_Conflict($response);
+                throw new AZPay_Error($response);
                 break;
             case 410:
                 throw new AZPay_Gone($response);
@@ -404,7 +683,7 @@ class AZPay_Unauthorized extends AZPay_Client_Exception {}
 class AZPay_Forbidden extends AZPay_Client_Exception {}
 class AZPay_NotFound extends AZPay_Client_Exception {}
 class AZPay_MethodNotAllowed extends AZPay_Client_Exception {}
-class AZPay_Conflict extends AZPay_Client_Exception {}
+class AZPay_Error extends AZPay_Client_Exception {}
 class AZPay_Gone extends AZPay_Client_Exception {}
 class AZPay_InvalidRecord extends AZPay_Client_Exception {}
 class AZPay_ServerError extends AZPay_Client_Exception {}
@@ -413,8 +692,9 @@ class AZPay_UnknownResponse extends AZPay_Client_Exception {}
 /**
  * cUrl Exceptions
  */
-class AZPay_Curl_Init_Exception extends AZPay_Exception {}
-class AZPay_Curl_Meta_Exception extends AZPay_Exception {}
-class AZPay_Curl_Exec_Exception extends AZPay_Exception {}
+class AZPay_Curl_Exception extends AZPay_Exception {}
+class AZPay_Curl_Init_Exception extends AZPay_Curl_Exception {}
+class AZPay_Curl_Meta_Exception extends AZPay_Curl_Exception {}
+class AZPay_Curl_Exec_Exception extends AZPay_Curl_Exception {}
 
 ?>
