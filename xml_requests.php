@@ -592,7 +592,7 @@ class XML_Requests {
 
 		$this->verificationNode($merchant['id'], $merchant['key']);
 
-		$this->xml_writer->startElement('paypal');
+		$this->xml_writer->startElement('onlineDebit');
 
 			$this->orderNode($order);
 
