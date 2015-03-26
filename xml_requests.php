@@ -1,27 +1,29 @@
 <?php
 /**
  * XML Requests Class
- * 
- * To construct the XMLs
- * 
- */
+ *
+ * Generate all the XMLs
+ *
+ * @author Gabriel Guerreiro <gabrielguerreiro.com>
+ **/
 
 class XML_Requests {
 
 
 	/**
-	 * Object XML
-	 * 
-	 * @var [object XML]
-	 */
+	 * Attribute to receive XMLWriter
+	 * and construct the XMLs
+	 *
+	 * @var XMLWriter
+	 **/
 	private $xml_writer;
 
 
 
 	function __construct() {
 
-		$this->xml_writer = new XMLWriter(); 
-		$this->xml_writer->openMemory(); 
+		$this->xml_writer = new XMLWriter();
+		$this->xml_writer->openMemory();
 		$this->xml_writer->setIndent(true);
 	}
 
@@ -29,11 +31,12 @@ class XML_Requests {
 
 	/**
 	 * Header XML
-	 * @return [void]
+	 *
+	 * @return void
 	 */
 	private function header() {
-		
-		$this->xml_writer->startDocument('1.0', 'UTF-8');		
+
+		$this->xml_writer->startDocument('1.0', 'UTF-8');
 		$this->xml_writer->startElement("transaction-request");
 	}
 
@@ -41,27 +44,27 @@ class XML_Requests {
 
 	/**
 	 * Return XML
-	 * 
-	 * @return [String] [XML parsed]
+	 *
+	 * @return string [XML parsed]
 	 */
 	public function output() {
 
 		$this->xml_writer->endElement();
-		
+
 		return $this->xml_writer->outputMemory();
 	}
 
 
-	
+
 	/**
 	 *  Verification XML
-	 * 
-	 * @param  [String] $merchantId  [Merchant ID]
-	 * @param  [String] $merchantKey [Merchant KEY]
-	 * @return [void]
+	 *
+	 * @param  string $merchantId  [Merchant ID]
+	 * @param  string $merchantKey [Merchant KEY]
+	 * @return void
 	 */
 	private function verificationNode($merchantId, $merchantKey) {
-		
+
 		$this->xml_writer->writeElement("version", Config::$AZPAY_VERSION);
 
 		$this->xml_writer->startElement("verification");
@@ -76,13 +79,13 @@ class XML_Requests {
 
 	/**
 	 * XML Order
-	 * 
-	 * @param  [array]   $order  [Order data]
-	 * @param  [array]   $rebill [Rebill data]
-	 * @return [void]
+	 *
+	 * @param  array   $order  [Order data]
+	 * @param  array   $rebill [Rebill data]
+	 * @return void
 	 */
 	private function orderNode($order, $rebill = null) {
-		
+
 		$this->xml_writer->startElement('order');
 
 			$this->xml_writer->writeElement('reference', $order['reference']);
@@ -97,15 +100,15 @@ class XML_Requests {
 			}
 
 		$this->xml_writer->endElement();
-	}		
+	}
 
 
 
 	/**
 	 * Billing node
-	 * 
-	 * @param  [array] $billing [Billing data]
-	 * @return [void]
+	 *
+	 * @param  array $billing [Billing data]
+	 * @return void
 	 */
 	private function billingNode($billing) {
 
@@ -129,13 +132,13 @@ class XML_Requests {
 
 	/**
 	 * Authorize XML
-	 * 
-	 * @param  [array] $merchant   [Merchant data]
-	 * @param  [array] $order      [Order data]
-	 * @param  [array] $payments   [Payment data]
-	 * @param  [array] $billing    [Billing data]
-	 * @param  [array] $options    [Options data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant   [Merchant data]
+	 * @param  array $order      [Order data]
+	 * @param  array $payments   [Payment data]
+	 * @param  array $billing    [Billing data]
+	 * @param  array $options    [Options data]
+	 * @return void
 	 */
 	public function authorizeXml($merchant, $order, $payments, $billing, $options) {
 
@@ -147,7 +150,7 @@ class XML_Requests {
 
 			$this->orderNode($order);
 
-			$this->paymentsNode($payments);							
+			$this->paymentsNode($payments);
 
 			$this->billingNode($billing);
 
@@ -160,11 +163,11 @@ class XML_Requests {
 
 	/**
 	 * Capture XML
-	 * 
+	 *
 	 * @param  [String] $merchant_id   [Merchant ID]
 	 * @param  [String] $merchant_key  [Merchant KEY]
 	 * @param  [String] $transactionId [AZPay transaction ID]
-	 * @return [void]
+	 * @return void
 	 */
 	public function captureXml($merchant_id, $merchant_key, $transactionId) {
 
@@ -182,13 +185,13 @@ class XML_Requests {
 
 	/**
 	 * Sale XML
-	 * 
-	 * @param  [array] $merchant [Merchant data]
-	 * @param  [array] $order    [Order data]
-	 * @param  [array] $payments [Payment data]
-	 * @param  [array] $billing  [Billing data]
-	 * @param  [array] $options  [Options data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant [Merchant data]
+	 * @param  array $order    [Order data]
+	 * @param  array $payments [Payment data]
+	 * @param  array $billing  [Billing data]
+	 * @param  array $options  [Options data]
+	 * @return void
 	 */
 	public function saleXml($merchant, $order, $payments, $billing, $options) {
 
@@ -199,7 +202,7 @@ class XML_Requests {
 		$this->xml_writer->startElement('sale');
 
 			$this->orderNode($order);
-			
+
 			$this->paymentsNode($payments);
 
 			$this->billingNode($billing);
@@ -208,14 +211,14 @@ class XML_Requests {
 			$this->xml_writer->writeElement('fraud', $options['fraud']);
 			$this->xml_writer->writeElement('customField', $options['customField']);
 
-		$this->xml_writer->endElement();		
+		$this->xml_writer->endElement();
 	}
 
 	/**
 	 * Card node
-	 * 
-	 * @param  [array] $card [Creditcard data]
-	 * @return [void]
+	 *
+	 * @param  array $card [Creditcard data]
+	 * @return void
 	 */
 	public function cardXML($card) {
 
@@ -223,7 +226,7 @@ class XML_Requests {
 		$this->xml_writer->writeElement('cardHolder', $card['cardHolder']);
 		$this->xml_writer->writeElement('cardNumber', Utils::formatNumber($card['cardNumber']));
 		$this->xml_writer->writeElement('cardSecurityCode', Utils::formatNumber($card['cardSecurityCode']));
-		$this->xml_writer->writeElement('cardExpirationDate', Utils::formatNumber($card['cardExpirationDate']));					
+		$this->xml_writer->writeElement('cardExpirationDate', Utils::formatNumber($card['cardExpirationDate']));
 		$this->xml_writer->writeElement('saveCreditCard', $card['saveCreditCard']);
 		$this->xml_writer->writeElement('generateToken', $card['generateToken']);
 		$this->xml_writer->writeElement('departureTax', $card['departureTax']);
@@ -232,16 +235,16 @@ class XML_Requests {
 
 	/**
 	 * Payments nodes
-	 * 
-	 * @param  [array] $payments [Payment data]
-	 * @return [void]
+	 *
+	 * @param  array $payments [Payment data]
+	 * @return void
 	 */
 	private function paymentsNode($payments) {
 
 		if (isset($payments[0]) && is_array($payments[0])) {
 
 			foreach ($payments as $key => $payment) {
-		
+
 				$this->xml_writer->startElement('payment');
 
 					if (isset($payment['tokenCard']) && !empty($payment['tokenCard'])) {
@@ -262,7 +265,7 @@ class XML_Requests {
 
 				$this->xml_writer->endElement();
 			}
-			
+
 		} else {
 
 			$this->xml_writer->startElement('payment');
@@ -290,9 +293,9 @@ class XML_Requests {
 
 	/**
 	 * Return the Token Card node
-	 * 
+	 *
 	 * @param  [String] $token [Token card saved]
-	 * @return [void]
+	 * @return void
 	 */
 	public function tokenCardXML($token) {
 
@@ -303,10 +306,10 @@ class XML_Requests {
 
 	/**
 	 * Report XML
-	 * 
-	 * @param  [array]  $merchant [Merchant data]
+	 *
+	 * @param  array  $merchant [Merchant data]
 	 * @param  [String] $tid      [AZPay transaction ID]
-	 * @return [void]
+	 * @return void
 	 */
 	public function reportXml($merchant, $tid) {
 
@@ -325,10 +328,10 @@ class XML_Requests {
 
 	/**
 	 * Cancel XML
-	 * 
-	 * @param  [array]  $merchant [Merchant data]
+	 *
+	 * @param  array  $merchant [Merchant data]
 	 * @param  [String] $tid      [AZPay transaction ID]
-	 * @return [void]
+	 * @return void
 	 */
 	public function cancelXml($merchant, $tid) {
 
@@ -347,13 +350,13 @@ class XML_Requests {
 
 	/**
 	 * Boleto XML
-	 * 
-	 * @param  [array] $merchant [Merchant data]
-	 * @param  [array] $order    [Order data]
-	 * @param  [array] $payment  [Payment data]
-	 * @param  [array] $billing  [Billing data]
-	 * @param  [array] $options  [Options data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant [Merchant data]
+	 * @param  array $order    [Order data]
+	 * @param  array $payment  [Payment data]
+	 * @param  array $billing  [Billing data]
+	 * @param  array $options  [Options data]
+	 * @return void
 	 */
 	public function boletoXml($merchant, $order, $payment, $billing, $options) {
 
@@ -376,9 +379,9 @@ class XML_Requests {
 
 	/**
 	 * Boleto payment node
-	 * 
-	 * @param  [array] $payment [Payment data]
-	 * @return [void]
+	 *
+	 * @param  array $payment [Payment data]
+	 * @return void
 	 */
 	private function paymentBoletoNode($payment) {
 
@@ -399,13 +402,13 @@ class XML_Requests {
 
 	/**
 	 * PagSeguro XML
-	 * 
-	 * @param  [array] $merchant [Merchant data]
-	 * @param  [array] $order    [Order data]
-	 * @param  [array] $payment  [Payment data]
-	 * @param  [array] $billing  [Billing data]
-	 * @param  [array] $options  [Options data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant [Merchant data]
+	 * @param  array $order    [Order data]
+	 * @param  array $payment  [Payment data]
+	 * @param  array $billing  [Billing data]
+	 * @param  array $options  [Options data]
+	 * @return void
 	 */
 	public function pagseguroXml($merchant, $order, $payment, $billing, $options) {
 
@@ -428,12 +431,12 @@ class XML_Requests {
 
 	/**
 	 * PagSeguro payment node
-	 * 
-	 * @param  [array] $payment [Payment data]
-	 * @return [void]
+	 *
+	 * @param  array $payment [Payment data]
+	 * @return void
 	 */
 	private function paymentPagseguroNode($payment) {
-		
+
 		$this->xml_writer->startElement('payment');
 
 			$this->xml_writer->writeElement('amount', Utils::formatNumber($payment['amount']));
@@ -447,13 +450,13 @@ class XML_Requests {
 
 	/**
 	 * PagSeguro Checkout XML
-	 * 
-	 * @param  [array] $merchant [Merchant data]
-	 * @param  [array] $order    [Order data]
-	 * @param  [array] $payment  [Payment data]
-	 * @param  [array] $billing  [Billing data]
-	 * @param  [array] $options  [Options data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant [Merchant data]
+	 * @param  array $order    [Order data]
+	 * @param  array $payment  [Payment data]
+	 * @param  array $billing  [Billing data]
+	 * @param  array $options  [Options data]
+	 * @return void
 	 */
 	public function pagseguroCheckoutXml($merchant, $order, $payment, $billing, $options) {
 
@@ -477,33 +480,33 @@ class XML_Requests {
 
 	/**
 	 * PagSeguro Checkout payment node
-	 * 
-	 * @param  [array] $payment [Payment data]
-	 * @return [void]
+	 *
+	 * @param  array $payment [Payment data]
+	 * @return void
 	 */
 	private function paymentPagseguroCheckoutNode($payment) {
-		
+
 		$this->xml_writer->startElement('payment');
 
 			$this->xml_writer->writeElement('method', $payment['method']);
 			$this->xml_writer->writeElement('amount', Utils::formatNumber($payment['amount']));
 			$this->xml_writer->writeElement('currency', $payment['currency']);
-			$this->xml_writer->writeElement('country', $payment['country']);			
-			$this->xml_writer->writeElement('numberOfPayments', $payment['numberOfPayments']);			
-			$this->xml_writer->writeElement('flag', $payment['flag']);			
-			$this->xml_writer->writeElement('cardHolder', $payment['cardHolder']);			
-			$this->xml_writer->writeElement('cardNumber', $payment['cardNumber']);			
-			$this->xml_writer->writeElement('cardSecurityCode', $payment['cardSecurityCode']);			
-			$this->xml_writer->writeElement('cardExpirationDate', $payment['cardExpirationDate']);			
+			$this->xml_writer->writeElement('country', $payment['country']);
+			$this->xml_writer->writeElement('numberOfPayments', $payment['numberOfPayments']);
+			$this->xml_writer->writeElement('flag', $payment['flag']);
+			$this->xml_writer->writeElement('cardHolder', $payment['cardHolder']);
+			$this->xml_writer->writeElement('cardNumber', $payment['cardNumber']);
+			$this->xml_writer->writeElement('cardSecurityCode', $payment['cardSecurityCode']);
+			$this->xml_writer->writeElement('cardExpirationDate', $payment['cardExpirationDate']);
 
 		$this->xml_writer->endElement();
 	}
 
 	/**
 	 * PagSeguro Checkout billing node
-	 * 
-	 * @param  [array] $billing [Billing data]
-	 * @return [void]
+	 *
+	 * @param  array $billing [Billing data]
+	 * @return void
 	 */
 	private function billingPagseguroNode($billing) {
 
@@ -529,13 +532,13 @@ class XML_Requests {
 
 	/**
 	 * PayPal XML
-	 * 
-	 * @param  [array] $merchant [Merchant data]
-	 * @param  [array] $order    [Order data]
-	 * @param  [array] $payment  [Payment data]
-	 * @param  [array] $billing  [Billing data]
-	 * @param  [array] $options  [Options data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant [Merchant data]
+	 * @param  array $order    [Order data]
+	 * @param  array $payment  [Payment data]
+	 * @param  array $billing  [Billing data]
+	 * @param  array $options  [Options data]
+	 * @return void
 	 */
 	public function paypalXml($merchant, $order, $payment, $billing, $options) {
 
@@ -559,12 +562,12 @@ class XML_Requests {
 
 	/**
 	 * PayPal payment node
-	 * 
-	 * @param  [array] $payment [Payment data]
-	 * @return [void]
+	 *
+	 * @param  array $payment [Payment data]
+	 * @return void
 	 */
 	private function paymentPaypalNode($payment) {
-		
+
 		$this->xml_writer->startElement('payment');
 
 			$this->xml_writer->writeElement('amount', Utils::formatNumber($payment['amount']));
@@ -578,13 +581,13 @@ class XML_Requests {
 
 	/**
 	 * Online Debit XML
-	 * 
-	 * @param  [array] $merchant [Merchant data]
-	 * @param  [array] $order    [Order data]
-	 * @param  [array] $payment  [Payment data]
-	 * @param  [array] $billing  [Billing data]
-	 * @param  [array] $options  [Options data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant [Merchant data]
+	 * @param  array $order    [Order data]
+	 * @param  array $payment  [Payment data]
+	 * @param  array $billing  [Billing data]
+	 * @param  array $options  [Options data]
+	 * @return void
 	 */
 	public function onlineDebitXml($merchant, $order, $payment, $billing, $options) {
 
@@ -608,12 +611,12 @@ class XML_Requests {
 
 	/**
 	 * Online Debit payment node
-	 * 
-	 * @param  [array] $payment [Payment data]
-	 * @return [void]
+	 *
+	 * @param  array $payment [Payment data]
+	 * @return void
 	 */
 	private function paymentOnlineDebitNode($payment) {
-		
+
 		$this->xml_writer->startElement('payment');
 
 			$this->xml_writer->writeElement('acquirer', $payment['acquirer']);
@@ -626,14 +629,14 @@ class XML_Requests {
 
 	/**
 	 * Boleto Rebill XML
-	 * 
-	 * @param  [array] $merchant [Merchant data]
-	 * @param  [array] $order    [Order data]
-	 * @param  [array] $payment  [Payment data]
-	 * @param  [array] $billing  [Billing data]
-	 * @param  [array] $options  [Options data]
-	 * @param  [array] $rebill   [Rebill data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant [Merchant data]
+	 * @param  array $order    [Order data]
+	 * @param  array $payment  [Payment data]
+	 * @param  array $billing  [Billing data]
+	 * @param  array $options  [Options data]
+	 * @param  array $rebill   [Rebill data]
+	 * @return void
 	 */
 	public function boletoRebillXml($merchant, $order, $payment, $billing, $options, $rebill) {
 
@@ -656,9 +659,9 @@ class XML_Requests {
 
 	/**
 	 * Boleto Rebill payment node
-	 * 
-	 * @param  [array] $payment [Payment data]
-	 * @return [void]
+	 *
+	 * @param  array $payment [Payment data]
+	 * @return void
 	 */
 	private function paymentBoletoRebillNode($payment) {
 
@@ -678,14 +681,14 @@ class XML_Requests {
 
 	/**
 	 * Creditcard Rebill XML
-	 * 
-	 * @param  [array] $merchant [Merchant data]
-	 * @param  [array] $order    [Order data]
-	 * @param  [array] $payment  [Payment data]
-	 * @param  [array] $billing  [Billing data]
-	 * @param  [array] $options  [Options data]
-	 * @param  [array] $rebill   [Rebill data]
-	 * @return [void]
+	 *
+	 * @param  array $merchant [Merchant data]
+	 * @param  array $order    [Order data]
+	 * @param  array $payment  [Payment data]
+	 * @param  array $billing  [Billing data]
+	 * @param  array $options  [Options data]
+	 * @param  array $rebill   [Rebill data]
+	 * @return void
 	 */
 	public function creditcardRebillXml($merchant, $order, $payment, $billing, $options, $rebill) {
 
@@ -708,9 +711,9 @@ class XML_Requests {
 
 	/**
 	 * Boleto Rebill payment node
-	 * 
-	 * @param  [array] $payment [Payment data]
-	 * @return [void]
+	 *
+	 * @param  array $payment [Payment data]
+	 * @return void
 	 */
 	private function paymentCreditcardRebillNode($payment) {
 
@@ -737,6 +740,6 @@ class XML_Requests {
 
 
 
-}
+} // END class XML_Requests
 
 ?>

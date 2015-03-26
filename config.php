@@ -1,19 +1,28 @@
-<?php 
+<?php
 /**
- * Config
+ * Config Class
  *
  * Static attributes with configurations, operations and messages
- * 
- */
+ *
+ * @author Gabriel Guerreiro <gabrielguerreiro.com>
+ **/
 
 class Config {
 
-	# AZPay URL
+	/**
+   * AZPay URL
+   *
+   * @var string
+   */
 	public static $RECIVER_URL = 'https://api.azpay.com.br/v1/receiver/';
 
 
-	# AZPay Version
-  public static $AZPAY_VERSION = '1.0.0';
+	/**
+   * AZPay Version
+   *
+   * @var string
+   */
+  public static $AZPAY_VERSION = '1.0.2';
 
 
   /**
@@ -31,8 +40,10 @@ class Config {
     'aura'        => 'Aura'
   );
 
+
   /**
    * AZPay Cards Operators
+   *
    * @var array
    */
   public static $CARD_OPERATORS = array(
@@ -80,6 +91,7 @@ class Config {
 
   /**
    * AZPay Boleto operators
+   *
    * @var array
    */
   public static $BOLETO_OPERATORS = array(
@@ -124,6 +136,7 @@ class Config {
 
   /**
    * Currency
+   *
    * @var array
    */
   public static $CURRENCIES = array(
@@ -133,6 +146,7 @@ class Config {
 
   /**
    * Operation Methods
+   *
    * @var array
    */
   public static $OPERATION_METHODS = array(
@@ -153,6 +167,7 @@ class Config {
 
   /**
    * Order Status
+   *
    * @var array
    */
   public static $ORDER_STATUS = array(
@@ -173,6 +188,7 @@ class Config {
 
   /**
    * Code responses by flag
+   *
    * @var array
    */
   public static $RESPONSE = array(
@@ -193,6 +209,7 @@ class Config {
 
   /**
    * Code operations by flag
+   *
    * @var array
    */
   public static $OPERATION = array(
@@ -212,6 +229,7 @@ class Config {
 
   /**
    * Error Messages by code
+   *
    * @var array
    */
   public static $ERROR_MESSAGE = array(
