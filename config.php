@@ -22,7 +22,7 @@ class Config {
    *
    * @var string
    */
-  public static $AZPAY_VERSION = '1.0.2';
+  public static $AZPAY_VERSION = '1.0.0';
 
 
   /**
@@ -225,6 +225,21 @@ class Config {
     'PAYPAL'    => 11,
     'TRANSFER'  => 12
   );
+
+
+
+  /**
+   * Period options to Rebill
+   * 
+   * @var array
+   */
+  public static $REBILL_PERIOD = array(
+  	'DAY' 	=> 1,
+  	'WEEK' 	=> 2,
+  	'MONTH' => 3,
+  	'YEAR' 	=> 4,
+  );
+
 
 
   /**
