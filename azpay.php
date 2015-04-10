@@ -5,7 +5,7 @@
  * Software Development Kit to integrate a checkout with AZPay Gateway
  *
  * @author Gabriel Guerreiro <gabrielguerreiro.com>
- * @version 1.1.0
+ * @version 1.1.1
  **/
 
 include 'config.php';
@@ -18,7 +18,7 @@ class AZPay {
 	/**
 	 * VERSION
 	 */
-	const VERSION = '1.1.0';
+	const VERSION = '1.1.1';
 
 	/**
 	 * Client Key and Client ID
@@ -327,7 +327,7 @@ class AZPay {
 		// If no errors, return XML parsed
 		if ($this->curl_error === null) {
 
-			$xml = simplexml_load_string($this->curl_response);
+			$xml = simplexml_load_string($this->curl_response, 'SimpleXMLElement', LIBXML_NOCDATA);
 
 			return $xml;
 
@@ -341,12 +341,13 @@ class AZPay {
 
 	/**
 	 * Get AZPay errors response
+	 * use inside Catch
 	 *
 	 * @return array [Data from errors]
 	 */
 	public function responseError() {
 
-		$xml = simplexml_load_string($this->curl_response);
+		$xml = simplexml_load_string($this->curl_response, 'SimpleXMLElement', LIBXML_NOCDATA);
 		$json = json_decode(json_encode($xml));
 
 		$response = array(
@@ -354,8 +355,8 @@ class AZPay {
 			'status_message' 	=> $json->status->message,
 			'error_code' 		=> $json->result->error->code,
 			'error_action' 		=> $json->result->error->action,
-			'error_details'		=> $json->result->error->details,
-			'error_moreInfo'	=> $json->result->error->moreInfo,
+			'error_details'		=> str_replace(array('<![CDATA[', ']]>'), '', $json->result->error->details),
+			'error_moreInfo'	=> str_replace(array('<![CDATA[', ']]>'), '', $json->result->error->moreInfo),
 			'error_message'		=> Config::$ERROR_MESSAGE[$json->result->error->code], // Message error to view
 		);
 
