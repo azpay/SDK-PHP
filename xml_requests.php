@@ -372,6 +372,7 @@ class XML_Requests {
 
 			$this->billingNode($billing);
 
+			$this->xml_writer->writeElement('urlReturn', $options['urlReturn']);
 			$this->xml_writer->writeElement('customField', $options['customField']);
 
 		$this->xml_writer->endElement();
@@ -705,6 +706,7 @@ class XML_Requests {
 
 			$this->billingNode($billing);
 
+			$this->xml_writer->writeElement('urlReturn', $options['urlReturn']);
 			$this->xml_writer->writeElement('customField', $options['customField']);
 
 		$this->xml_writer->endElement();
