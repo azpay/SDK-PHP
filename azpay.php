@@ -49,9 +49,9 @@ class AZPay {
 	 */
 	public $config_rebill = array(
 		'period' 	=> '1',
-		'frequency'	=> '15',
-		'dateStart'	=> '2014-06-15',
-		'dateEnd' 	=> '2014-07-24'
+		'frequency'	=> '12',
+		'dateStart'	=> '2015-01-01',
+		'dateEnd' 	=> '2014-01-01'
 	);
 
 
@@ -259,6 +259,12 @@ class AZPay {
 	 */
 	public $throw_exceptions = true;
 
+	/**
+	 * Flag to return XML instead Execute
+	 * @var boolean
+	 */
+	public $return_xml = false;
+
 
 
 	/**
@@ -372,6 +378,17 @@ class AZPay {
 
 
 	/**
+	 * Set $return_xml to TRUE
+	 * to return XML instead Execute
+	 * @return void
+	 */
+	public function returnXml() {
+		$this->return_xml = true;
+		return $this;
+	}
+
+
+	/**
 	 * Request authorization
 	 * to complete the transaction
 	 *
@@ -391,6 +408,9 @@ class AZPay {
 		$requests->authorizeXml($this->merchant, $this->config_order, $this->config_card_payments, $this->config_billing, $this->config_options);
 		$xml = $requests->output();
 
+		if ($this->return_xml)
+			return $xml;
+		
 		$this->execute($xml);
 	}
 
@@ -412,6 +432,9 @@ class AZPay {
 
 		$requests->captureXml($this->merchant['id'], $this->merchant['key'], $transactionId);
 		$xml = $requests->output();
+
+		if ($this->return_xml)
+			return $xml;
 
 		$this->execute($xml);
 	}
@@ -437,6 +460,9 @@ class AZPay {
 		$requests->saleXml($this->merchant, $this->config_order, $this->config_card_payments, $this->config_billing, $this->config_options);
 		$xml = $requests->output();
 
+		if ($this->return_xml)
+			return $xml;
+
 		$this->execute($xml);
 	}
 
@@ -461,6 +487,9 @@ class AZPay {
 		$requests->creditcardRebillXml($this->merchant, $this->config_order, $this->config_card_payments, $this->config_billing, $this->config_options, $this->config_rebill);
 		$xml = $requests->output();
 
+		if ($this->return_xml)
+			return $xml;
+
 		$this->execute($xml);
 	}
 
@@ -481,6 +510,9 @@ class AZPay {
 		$requests->reportXml($this->merchant, $transactionID);
 		$xml = $requests->output();
 
+		if ($this->return_xml)
+			return $xml;
+
 		$this->execute($xml);
 	}
 
@@ -500,6 +532,9 @@ class AZPay {
 
 		$requests->cancelXml($this->merchant, $transactionID);
 		$xml = $requests->output();
+
+		if ($this->return_xml)
+			return $xml;
 
 		$this->execute($xml);
 	}
@@ -533,6 +568,9 @@ class AZPay {
 
 		$xml = $requests->output();
 
+		if ($this->return_xml)
+			return $xml;
+
 		$this->execute($xml);
 	}
 
@@ -555,6 +593,9 @@ class AZPay {
 
 		$requests->pagseguroXml($this->merchant, $this->config_order, $this->config_pagseguro, $this->config_billing, $this->config_options);
 		$xml = $requests->output();
+
+		if ($this->return_xml)
+			return $xml;
 
 		$this->execute($xml);
 	}
@@ -579,6 +620,9 @@ class AZPay {
 		$requests->pagseguroCheckoutXml($this->merchant, $this->config_order, $this->config_pagseguro_checkout, $this->config_pagseguro_checkout_billing, $this->config_options);
 		$xml = $requests->output();
 
+		if ($this->return_xml)
+			return $xml;
+
 		$this->execute($xml);
 	}
 
@@ -602,6 +646,9 @@ class AZPay {
 		$requests->paypalXml($this->merchant, $this->config_order, $this->config_paypal, $this->config_billing, $this->config_options);
 		$xml = $requests->output();
 
+		if ($this->return_xml)
+			return $xml;
+
 		$this->execute($xml);
 	}
 
@@ -624,6 +671,9 @@ class AZPay {
 
 		$requests->onlineDebitXml($this->merchant, $this->config_order, $this->config_online_debit, $this->config_billing, $this->config_options);
 		$xml = $requests->output();
+
+		if ($this->return_xml)
+			return $xml;
 
 		$this->execute($xml);
 	}
