@@ -5,7 +5,7 @@
  * Software Development Kit to integrate a checkout with AZPay Gateway
  *
  * @author Gabriel Guerreiro <gabrielguerreiro.com>
- * @version 1.1.1
+ * @version 1.2.1
  **/
 
 include 'config.php';
@@ -18,7 +18,7 @@ class AZPay {
 	/**
 	 * VERSION
 	 */
-	const VERSION = '1.1.1';
+	const VERSION = '1.2.1';
 
 	/**
 	 * Client Key and Client ID
@@ -206,28 +206,28 @@ class AZPay {
 	 *
 	 * @var String
 	 */
-	public $curl_response = null;
+	private $curl_response = null;
 
 	/**
 	 * Meta data
 	 *
 	 * @var String
 	 */
-	public $curl_response_meta = null;
+	private $curl_response_meta = null;
 
 	/**
 	 * Errors
 	 *
 	 * @var String
 	 */
-	public $curl_error = null;
+	private $curl_error = null;
 
 	/**
 	 * Errors Code
 	 *
 	 * @var int
 	 */
-	public $curl_error_code = 0;
+	private $curl_error_code = 0;
 
 	/**
 	 * Set timeout to cURL
@@ -250,7 +250,7 @@ class AZPay {
 	 *
 	 * @var null
 	 */
-	public $message_error = null;
+	private $message_error = null;
 
 	/**
 	 * Flag to execute Exceptions
@@ -260,10 +260,10 @@ class AZPay {
 	public $throw_exceptions = true;
 
 	/**
-	 * Flag to return XML instead Execute
-	 * @var boolean
+	 * XML generated
+	 * @var XMLObject
 	 */
-	public $return_xml = false;
+	private $xml = null;
 
 
 
@@ -285,17 +285,19 @@ class AZPay {
 
 	/**
 	 * Execute Request
+	 * Use after all to make request in fact
 	 *
-	 * @param  string $xml [XML string]
-	 * @return void
+	 * eg: $azpay->sale()->execute()
+	 *
+	 * @return this
 	 */
-	public function execute($xml) {
+	public function execute() {
 
 		$ch = curl_init();
 
 		curl_setopt($ch, CURLOPT_URL, Config::$RECIVER_URL);
 		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->xml);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
 		curl_setopt($ch, CURLOPT_TIMEOUT, $this->curl_timeout);
@@ -318,6 +320,8 @@ class AZPay {
 		curl_close($ch);
 
 		$this->checkErrors();
+
+		return $this;
 	}
 
 
@@ -378,12 +382,28 @@ class AZPay {
 
 
 	/**
-	 * Set $return_xml to TRUE
-	 * to return XML instead Execute
-	 * @return void
+	 * Return XML generated
+	 * Use after any Request and before Execute
+	 *
+	 * eg: $azpay->sale()->returnXml()
+	 *
+	 * @return XMLObject
 	 */
 	public function returnXml() {
-		$this->return_xml = true;
+		return $this->xml;
+	}
+
+
+	/**
+	 * Flag to ignore exceptions
+	 * user before any Request
+	 *
+	 * eg: $azpay->ignoreExceptions()->sale()
+	 * 
+	 * @return this
+	 */
+	public function ignoreExceptions() {
+		$this->throw_exceptions = false;
 		return $this;
 	}
 
@@ -399,19 +419,16 @@ class AZPay {
 	 * 	- $config_billing
 	 * 	- $config_options
 	 *
-	 * @return void
+	 * @return this
 	 */
 	public function authorize() {
 
 		$requests = new XML_Requests();
 
 		$requests->authorizeXml($this->merchant, $this->config_order, $this->config_card_payments, $this->config_billing, $this->config_options);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-		
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -424,19 +441,16 @@ class AZPay {
 	 * 	- $merchant
 	 *
 	 * @param  string $transactionId [TID of AZPay transaction]
-	 * @return void
+	 * @return this
 	 */
 	public function capture($transactionId) {
 
 		$requests = new XML_Requests();
 
 		$requests->captureXml($this->merchant['id'], $this->merchant['key'], $transactionId);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -451,19 +465,16 @@ class AZPay {
 	 *  - $config_billing
 	 *  - $config_options
 	 *
-	 * @return void
+	 * @return this
 	 */
 	public function sale() {
 
 		$requests = new XML_Requests();
 
 		$requests->saleXml($this->merchant, $this->config_order, $this->config_card_payments, $this->config_billing, $this->config_options);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -478,19 +489,16 @@ class AZPay {
 	 *  - $config_options
 	 *  - $config_rebill
 	 *
-	 * @return void
+	 * @return this
 	 */
 	public function rebill() {
 
 		$requests = new XML_Requests();
 
 		$requests->creditcardRebillXml($this->merchant, $this->config_order, $this->config_card_payments, $this->config_billing, $this->config_options, $this->config_rebill);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -501,19 +509,16 @@ class AZPay {
 	 * 	- $merchant
 	 *
 	 * @param  string $transactionId [TID of AZPay transaction]
-	 * @return void
+	 * @return this
 	 */
 	public function report($transactionID) {
 
 		$requests = new XML_Requests();
 
 		$requests->reportXml($this->merchant, $transactionID);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -524,19 +529,16 @@ class AZPay {
 	 * 	- $merchant
 	 *
 	 * @param  string $transactionID [TID of AZPay transaction]
-	 * @return void
+	 * @return this
 	 */
 	public function cancel($transactionID) {
 
 		$requests = new XML_Requests();
 
 		$requests->cancelXml($this->merchant, $transactionID);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -554,7 +556,7 @@ class AZPay {
 	 * 	- $config_rebill
 	 *
 	 * @param  [boolean] $rebill [Flag to enable rebill]
-	 * @return void
+	 * @return this
 	 */
 	public function boleto($rebill = false) {
 
@@ -566,12 +568,9 @@ class AZPay {
 			$requests->boletoXml($this->merchant, $this->config_order, $this->config_boleto, $this->config_billing, $this->config_options);
 		}
 
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -585,19 +584,16 @@ class AZPay {
 	 *  - $config_billing
 	 *  - $config_options
 	 *
-	 * @return void
+	 * @return this
 	 */
 	public function pagseguro() {
 
 		$requests = new XML_Requests();
 
 		$requests->pagseguroXml($this->merchant, $this->config_order, $this->config_pagseguro, $this->config_billing, $this->config_options);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -611,19 +607,16 @@ class AZPay {
 	 *  - $config_pagseguro_billing
 	 *  - $config_options
 	 *
-	 * @return void
+	 * @return this
 	 */
 	public function pagseguro_checkout() {
 
 		$requests = new XML_Requests();
 
 		$requests->pagseguroCheckoutXml($this->merchant, $this->config_order, $this->config_pagseguro_checkout, $this->config_pagseguro_checkout_billing, $this->config_options);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -637,19 +630,16 @@ class AZPay {
 	 *  - $config_billing
 	 *  - $config_options
 	 *
-	 * @return void
+	 * @return this
 	 */
 	public function paypal() {
 
 		$requests = new XML_Requests();
 
 		$requests->paypalXml($this->merchant, $this->config_order, $this->config_paypal, $this->config_billing, $this->config_options);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
@@ -663,19 +653,16 @@ class AZPay {
 	 *  - $config_pagseguro_billing
 	 *  - $config_options
 	 *
-	 * @return void
+	 * @return this
 	 */
 	public function online_debit() {
 
 		$requests = new XML_Requests();
 
 		$requests->onlineDebitXml($this->merchant, $this->config_order, $this->config_online_debit, $this->config_billing, $this->config_options);
-		$xml = $requests->output();
+		$this->xml = $requests->output();
 
-		if ($this->return_xml)
-			return $xml;
-
-		$this->execute($xml);
+		return $this;
 	}
 
 
