@@ -208,6 +208,63 @@ class Config {
 
 
   /**
+   * Response messages by status code
+   * 
+   * @var array
+   */
+  public static $RESPONSE_MESSAGES = array(
+    0 => array(
+      'title' => 'Criada / Em andamento',
+      'message' => 'A transação ainda não foi processada pelo Adquirente escolhido para transacionar.',
+    ),
+    1 => array(
+      'title' => 'Autenticada',
+      'message' => 'A transação foi validada mais ainda não foi processada para saber se foi aprovada.',
+    ),
+    2 => array(
+      'title' => 'Não Autenticada',
+      'message' => 'Não houve validação do cartão de crédito.'
+    ),
+    3 => array(
+      'title' => 'Autorizada pela operadora',
+      'message' => 'A transação foi aprovada mais ainda não foi capturada, os créditos ainda não foram creditados para o lojista.'
+    ),
+    4 => array(
+      'title' => 'Não Autorizada pela operadora',
+      'message' => 'A transação não foi aprovada, verifique a tabela de possíveis erros.'
+    ),
+    5 => array(
+      'title' => 'Em Cancelamento',
+      'message' => 'A transação ainda não foi cancelada, aguardando adquirente retornar a confirmação.'
+    ),
+    6 => array(
+      'title' => 'Cancelado',
+      'message' => 'A transação foi cancelada e não será mais creditada o valor para o lojista.'
+    ),
+    7 => array(
+      'title' => 'Em Captura',
+      'message' => 'A transação ainda não foi capturada, aguardando adquirente retornar a confirmação.'
+    ),
+    8 => array(
+      'title' => 'Capturada / Finalizada',
+      'message' => 'A transação foi capturada e os créditos foram confirmados para o lojista.'
+    ),
+    9 => array(
+      'title' => 'Não Capturada',
+      'message' => 'A transação não foi capturada, tentar novamente a captura.'
+    ),
+    10 => array(
+      'title' => 'Pagamento Recorrente - Agendado',
+      'message' => 'A transação de pagamento foi agendada para as datas definidas pelo envio do XML.'
+    ),
+    12 => array(
+      'title' => 'Boleto Gerado',
+      'message' => 'O boleto foi gerado com sucesso.'
+    )
+  );
+
+
+  /**
    * Code operations by flag
    *
    * @var array
@@ -227,7 +284,6 @@ class Config {
   );
 
 
-
   /**
    * Period options to Rebill
    * 
@@ -239,7 +295,6 @@ class Config {
   	'MONTH' => 3,
   	'YEAR' 	=> 4,
   );
-
 
 
   /**
