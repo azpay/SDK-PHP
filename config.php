@@ -166,32 +166,11 @@ class Config {
 
 
   /**
-   * Order Status
-   *
-   * @var array
-   */
-  public static $ORDER_STATUS = array(
-    '0' => 'Criada / Em andamento',
-    '1' => 'Autenticada',
-    '2' => 'Não Autenticada',
-    '3' => 'Autorizada pela operadora',
-    '4' => 'Não autorizada pela operadora',
-    '5' => 'Em Cancelamento',
-    '6' => 'Cancelado',
-    '7' => 'Em Captura',
-    '8' => 'Capturada / Finalizada',
-    '9' => 'Não capturada',
-    '10' => 'Pagamento Recorrente - Agendado',
-    '12' => 'Boleto Gerado'
-  );
-
-
-  /**
    * Code responses by flag
    *
    * @var array
    */
-  public static $RESPONSE = array(
+  public static $STATUS = array(
     'CREATED'         => 0,
     'AUTHENTICATED'   => 1,
     'UNAUTHENTICATED' => 2,
@@ -212,7 +191,7 @@ class Config {
    * 
    * @var array
    */
-  public static $RESPONSE_MESSAGES = array(
+  public static $STATUS_MESSAGES = array(
     0 => array(
       'title' => 'Criada / Em andamento',
       'message' => 'A transação ainda não foi processada pelo Adquirente escolhido para transacionar.',
