@@ -142,53 +142,50 @@ $azpay->config_options['customField'] = '';
 try {
 
 	/*==========  Boleto  ==========*/
-	//$azpay->boleto();
+	//$azpay->boleto()->execute();
 
 	/*==========  Authorization  ==========*/
 	# Request authorization to transaction
-	//$azpay->authorize();
+	//$azpay->authorize()->execute();
 
 	/*==========  Capture  ==========*/
 	# Execute capture of transaction
-	//$azpay->capture("7C39F328-3CE0-3CB6-C892-923FB7586D11");
+	//$azpay->capture("7C39F328-3CE0-3CB6-C892-923FB7586D11")->execute();
 
 	/*==========  Sale  ==========*/
 	# Execute authorization and capture (direct sale), to transaction
-	//$azpay->sale();
+	//$azpay->sale()->execute();
 
 	/*==========  Cancel  ==========*/
-	//$azpay->cancel("DDCE12F2-21A9-1E7D-B3B2-4B3867BEB6DF");
+	//$azpay->cancel("DDCE12F2-21A9-1E7D-B3B2-4B3867BEB6DF")->execute();
 
 	/*==========  PagSeguro  ==========*/
-	//$azpay->pagseguro();
+	//$azpay->pagseguro()->execute();
 
 	/*==========  Pagseguro  ==========*/
-	//$azpay->pagseguro_checkout();
+	//$azpay->pagseguro_checkout()->execute();
 
 	/*==========  PayPal  ==========*/
-	//$azpay->paypal();
+	//$azpay->paypal()->execute();
 
 	/*==========  Online Debit  ==========*/
-	//$azpay->online_debit();
+	//$azpay->online_debit()->execute();
 
 	/*==========  Rebill  ==========*/
-	//$azpay->rebill();
+	//$azpay->rebill()->execute();
 
 	/*==========  Report  ==========*/
 	# Check a transaction status by TID
-	$azpay->report('105F866-67CD-4B89-BE82-B1AC33E7027F');
+	$azpay->report('105F866-67CD-4B89-BE82-B1AC33E7027F')->execute();
 
 
 	/*==========  Response  ==========*/
 	$xml = $azpay->response();
 
-	var_dump($xml);
-
 } catch (AZPay_Error $e) { // HTTP 409 - AZPay Error
 
 	/*==========  Error Response  ==========*/	
 	$error = $azpay->responseError();
-	var_dump($error);
 
 } catch (AZPay_Curl_Exception $e) { // Connection Error
 	print($e->getMessage());
