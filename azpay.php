@@ -244,13 +244,6 @@ class AZPay {
 	 */
 	public $error = false;
 
-	/**
-	 * Message Error
-	 * from AZPay
-	 *
-	 * @var null
-	 */
-	private $message_error = null;
 
 	/**
 	 * Flag to execute Exceptions
@@ -276,7 +269,7 @@ class AZPay {
 	function __construct($merchant_id, $merchant_key) {
 
 		if (!function_exists('curl_init'))
-            throw new Exception('CURL module not available! Pest requires CURL. See http://php.net/manual/en/book.curl.php');
+            throw new Exception('cURL module is not available! This SDK requires cURL. See http://php.net/manual/en/book.curl.php');
 
 		$this->merchant['id'] = $merchant_id;
 		$this->merchant['key'] = $merchant_key;
@@ -326,7 +319,7 @@ class AZPay {
 
 
 	/**
-	 * Return the cUrl response
+	 * Return XML response
 	 * from AZPay
 	 *
 	 * @return XMLObject if [Reponse]
@@ -382,15 +375,55 @@ class AZPay {
 
 
 	/**
-	 * Return XML generated
+	 * Get XML generated
 	 * Use after any Request and before Execute
 	 *
-	 * eg: $azpay->sale()->returnXml()
+	 * eg: $azpay->sale()->getXml()
 	 *
 	 * @return XMLObject
 	 */
-	public function returnXml() {
+	public function getXml() {
 		return $this->xml;
+	}
+
+
+	/**
+	 * Get cURL response
+	 * 
+	 * @return string
+	 */
+	public function getCurlResponse() {
+		return $this->curl_response;
+	}
+
+
+	/**
+	 * Get cURL response meta
+	 * 
+	 * @return string
+	 */
+	public function getCurlResponseMeta() {
+		return $this->curl_response_meta;
+	}
+
+
+	/**
+	 * Get cURL Error
+	 * 
+	 * @return string
+	 */
+	public function getCurlError() {
+		return $this->curl_error;
+	}
+
+
+	/**
+	 * Get cURL Error Code
+	 * 
+	 * @return string
+	 */
+	public function getCurlErrorCode() {
+		return $this->curl_error_code;
 	}
 
 
