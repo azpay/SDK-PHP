@@ -85,6 +85,15 @@ class Config {
         'visa',
         'mastercard'
       )
+    ),
+
+    'stone' => array(
+      'code' => '20',
+      'name' => 'Elavon',
+      'flags' => array(
+        'visa',
+        'mastercard'
+      )
     )
   );
 
