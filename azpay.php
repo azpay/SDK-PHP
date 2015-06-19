@@ -5,7 +5,7 @@
  * Software Development Kit to integrate a checkout with AZPay Gateway
  *
  * @author Gabriel Guerreiro <gabrielguerreiro.com>
- * @version 1.2.1
+ * @version 1.2.5
  **/
 
 include 'config.php';
@@ -18,7 +18,7 @@ class AZPay {
 	/**
 	 * VERSION
 	 */
-	const VERSION = '1.2.1';
+	const VERSION = '1.2.5';
 
 	/**
 	 * Client Key and Client ID
@@ -62,14 +62,14 @@ class AZPay {
 	 */
 	public $config_billing = array(
 		'customerIdentity' 	=> '',
-		'name' 				=> '',
-		'address' 			=> '',
-		'address2' 			=> '',
-		'city' 				=> '',
+		'name' 			=> '',
+		'address' 		=> '',
+		'address2' 		=> '',
+		'city' 			=> '',
 		'state' 			=> '',
 		'postalCode' 		=> '',
-		'country' 			=> 'BR',
-		'phone' 			=> '',
+		'country' 		=> 'BR',
+		'phone' 		=> '',
 		'email' 			=> ''
 	);
 
@@ -80,23 +80,23 @@ class AZPay {
 	 * @var array
 	 */
 	public $config_card_payments = array(
-		'acquirer' 				=> '',
-		'method' 				=> '',
-		'amount' 				=> '0000',
-		'currency' 				=> '986',
-		'country' 				=> 'BRA',
-		'numberOfPayments' 		=> '1',
-		'groupNumber' 			=> '0',
-		'flag' 					=> '',
-		'cardHolder' 			=> '',
-		'cardNumber' 			=> '',
-		'cardSecurityCode' 		=> '',
+		'acquirer' 		=> '',
+		'method' 		=> '',
+		'amount' 		=> '0000',
+		'currency' 		=> '986',
+		'country' 		=> 'BRA',
+		'numberOfPayments' 	=> '1',
+		'groupNumber' 		=> '0',
+		'flag' 			=> '',
+		'cardHolder' 		=> '',
+		'cardNumber' 		=> '',
+		'cardSecurityCode' 	=> '',
 		'cardExpirationDate' 	=> '',
-		'saveCreditCard' 		=> 'true',
-		'generateToken' 		=> 'false',
-		'departureTax' 			=> '0',
-		'softDescriptor' 		=> '',
-		'tokenCard' 			=> ''
+		'saveCreditCard' 	=> 'true',
+		'generateToken' 	=> 'false',
+		'departureTax' 		=> '0',
+		'softDescriptor' 	=> '',
+		'tokenCard' 		=> ''
 	);
 
 
@@ -106,12 +106,12 @@ class AZPay {
 	 * @var array
 	 */
 	public $config_boleto = array(
-		'acquirer'	 	=> '10',
-		'expire' 		=> '',
+		'acquirer'	=> '10',
+		'expire' 	=> '',
 		'nrDocument' 	=> '',
-		'amount'		=> '0000',
-		'currency' 		=> '986',
-		'country' 		=> 'BRA',
+		'amount'	=> '0000',
+		'currency' 	=> '986',
+		'country' 	=> 'BRA',
 		'instructions' 	=> ''
 	);
 
@@ -134,15 +134,15 @@ class AZPay {
 	 * @var array
 	 */
 	public $config_pagseguro_checkout = array(
-		'method' 				=> '',
-		'amount' 				=> '0000',
-		'currency' 				=> '986',
-		'country' 				=> 'BRA',
-		'numberOfPayments' 		=> '1',
-		'flag' 					=> '',
-		'cardHolder' 			=> '',
-		'cardNumber' 			=> '',
-		'cardSecurityCode' 		=> '',
+		'method' 		=> '',
+		'amount' 		=> '0000',
+		'currency' 		=> '986',
+		'country' 		=> 'BRA',
+		'numberOfPayments' 	=> '1',
+		'flag' 			=> '',
+		'cardHolder' 		=> '',
+		'cardNumber' 		=> '',
+		'cardSecurityCode' 	=> '',
 		'cardExpirationDate' 	=> ''
 	);
 
@@ -153,17 +153,17 @@ class AZPay {
 	 */
 	public $config_pagseguro_checkout_billing = array(
 		'customerIdentity' 	=> '',
-		'name' 				=> '',
-		'address' 			=> '',
-		'address2' 			=> '',
-		'city' 				=> '',
+		'name' 			=> '',
+		'address' 		=> '',
+		'address2' 		=> '',
+		'city' 			=> '',
 		'state' 			=> '',
 		'postalCode'		=> '',
-		'country' 			=> 'BR',
-		'phone' 			=> '',
+		'country' 		=> 'BR',
+		'phone' 		=> '',
 		'email' 			=> '',
 		'birthDate' 		=> '',
-		'cpf' 				=> ''
+		'cpf' 			=> ''
 	);
 
 
@@ -185,7 +185,7 @@ class AZPay {
 	 * @var array
 	 */
 	public $config_online_debit = array(
-		'acquirer' 	=> ''
+		'acquirer' => ''
 	);
 
 
@@ -196,7 +196,7 @@ class AZPay {
 	 */
 	public $config_options = array(
 		'urlReturn' 	=> '',
-		'fraud'		 	=> 'false',
+		'fraud'		=> 'false',
 		'customField' 	=> ''
 	);
 
@@ -244,13 +244,12 @@ class AZPay {
 	 */
 	public $error = false;
 
-
 	/**
 	 * Flag to execute Exceptions
 	 *
 	 * @var boolean
 	 */
-	public $throw_exceptions = true;
+	private $throw_exceptions = true;
 
 	/**
 	 * XML generated
@@ -269,7 +268,7 @@ class AZPay {
 	function __construct($merchant_id, $merchant_key) {
 
 		if (!function_exists('curl_init'))
-            throw new Exception('cURL module is not available! This SDK requires cURL. See http://php.net/manual/en/book.curl.php');
+			throw new Exception('cURL module is not available! This SDK requires cURL. See http://php.net/manual/en/book.curl.php');
 
 		$this->merchant['id'] = $merchant_id;
 		$this->merchant['key'] = $merchant_key;
@@ -286,9 +285,14 @@ class AZPay {
 	 */
 	public function execute() {
 
+		// Reset error flag
+		$this->error = false;
+		
+		// Init cURL
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, Config::$RECIVER_URL);
+		// Config cURL
+		curl_setopt($ch, CURLOPT_URL, Config::$RECEIVER_URL);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->xml);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -330,14 +334,11 @@ class AZPay {
 		// If no errors, return XML parsed
 		if ($this->curl_error === null) {
 
-			$xml = simplexml_load_string($this->curl_response, 'SimpleXMLElement', LIBXML_NOCDATA);
-
-			return $xml;
+			return simplexml_load_string($this->curl_response, 'SimpleXMLElement', LIBXML_NOCDATA);
 
 		} else {
 
 			return $this->curl_error;
-
 		}
 	}
 
@@ -345,6 +346,7 @@ class AZPay {
 	/**
 	 * Get AZPay errors response
 	 * use inside Catch
+	 * 
 	 *
 	 * @return array [Data from errors]
 	 */
@@ -352,22 +354,28 @@ class AZPay {
 
 		$xml = simplexml_load_string($this->curl_response, 'SimpleXMLElement', LIBXML_NOCDATA);
 		$json = json_decode(json_encode($xml));
+		$response = array();
 
-		$response = array(
-			'status_code' 		=> $json->status->code,
-			'status_message' 	=> $json->status->message,
-			'error_code' 		=> $json->result->error->code,
-			'error_action' 		=> $json->result->error->action,
-			'error_details'		=> str_replace(array('<![CDATA[', ']]>'), '', $json->result->error->details),
-			'error_moreInfo'	=> str_replace(array('<![CDATA[', ']]>'), '', $json->result->error->moreInfo),
-			'error_message'		=> Config::$ERROR_MESSAGE[$json->result->error->code], // Message error to view
-		);
+		if (property_exists($json, 'status')) {
 
-		// 101 - XML Error
-		if ($json->result->error->code != '101' && $json->result->error->code != 101) {
-			$response['message_acquirer'] = $json->result->error->message->acquirer;
-			$response['error_acquirer'] = $json->result->error->message->errorAcquirer;
-			$response['timestamp'] = $json->result->error->message->timestamp;
+			$response['status_code'] = (property_exists($json->status, 'code')) ? $json->status->code : null;
+			$response['status_message'] = (property_exists($json->status, 'message')) ? $json->status->message : null;
+		}
+
+		if (property_exists($json,'result') && property_exists($json->result,'error')) {
+
+			$response['error_code'] = (property_exists($json->result->error, 'code')) ? $json->result->error->code : null;
+			$response['error_action'] = (property_exists($json->result->error,'action')) ? $json->result->error->action : null;
+			$response['error_message'] = (property_exists($json->result->error,'code') && isset(Config::$ERROR_MESSAGE[$json->result->error->code])) ? Config::$ERROR_MESSAGE[$json->result->error->code] : null;
+			$response['error_details'] = (property_exists($json->result->error,'details') && is_string($json->result->error->details)) ? str_replace(array('<![CDATA[', ']]>'), '', $json->result->error->details) : null;
+			$response['error_moreInfo'] = (property_exists($json->result->error,'moreInfo') && is_string($json->result->error->moreInfo)) ? str_replace(array('<![CDATA[', ']]>'), '', $json->result->error->moreInfo) : null;
+
+			// 101 - XML Error
+			if ($json->result->error->code != '101' && $json->result->error->code != 101 && property_exists($json->result->error,'message')) {
+				$response['message_acquirer'] = (property_exists($json->result->error->message,'acquirer')) ? $json->result->error->message->acquirer : null;
+				$response['error_acquirer'] = (property_exists($json->result->error->message,'errorAcquirer')) ? $json->result->error->message->errorAcquirer : null;
+				$response['timestamp'] = (property_exists($json->result->error->message,'timestamp')) ? $json->result->error->message->timestamp : null;
+			}
 		}
 
 		return $response;
