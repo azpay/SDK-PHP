@@ -14,7 +14,7 @@ class Config {
    *
    * @var string
    */
-	public static $RECIVER_URL = 'https://api.azpay.com.br/v1/receiver/';
+	public static $RECEIVER_URL = 'https://api.azpay.com.br/v1/receiver/';
 
 
 	/**
