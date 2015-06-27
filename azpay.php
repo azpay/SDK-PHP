@@ -5,7 +5,7 @@
  * Software Development Kit to integrate a checkout with AZPay Gateway
  *
  * @author Gabriel Guerreiro <gabrielguerreiro.com>
- * @version 1.2.5
+ * @version 1.2.6
  **/
 
 include 'config.php';
@@ -18,7 +18,7 @@ class AZPay {
 	/**
 	 * VERSION
 	 */
-	const VERSION = '1.2.5';
+	const VERSION = '1.2.6';
 
 	/**
 	 * Client Key and Client ID
@@ -354,7 +354,18 @@ class AZPay {
 
 		$xml = simplexml_load_string($this->curl_response, 'SimpleXMLElement', LIBXML_NOCDATA);
 		$json = json_decode(json_encode($xml));
-		$response = array();
+		$response = array(
+			'status_code' => null,
+			'status_message' => null,
+			'error_code' => null,
+			'error_action' => null,
+			'error_message' => null,
+			'error_details' => null,
+			'error_moreInfo' => null,
+			'message_acquirer' => null,
+			'error_acquirer' => null,
+			'timestamp' => null
+		);
 
 		if (property_exists($json, 'status')) {
 
@@ -371,7 +382,7 @@ class AZPay {
 			$response['error_moreInfo'] = (property_exists($json->result->error,'moreInfo') && is_string($json->result->error->moreInfo)) ? str_replace(array('<![CDATA[', ']]>'), '', $json->result->error->moreInfo) : null;
 
 			// 101 - XML Error
-			if ($json->result->error->code != '101' && $json->result->error->code != 101 && property_exists($json->result->error,'message')) {
+			if (property_exists($json->result->error,'code') && property_exists($json->result->error,'message') && intval($json->result->error->code) !== 101) {
 				$response['message_acquirer'] = (property_exists($json->result->error->message,'acquirer')) ? $json->result->error->message->acquirer : null;
 				$response['error_acquirer'] = (property_exists($json->result->error->message,'errorAcquirer')) ? $json->result->error->message->errorAcquirer : null;
 				$response['timestamp'] = (property_exists($json->result->error->message,'timestamp')) ? $json->result->error->message->timestamp : null;
