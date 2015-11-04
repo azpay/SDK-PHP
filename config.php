@@ -9,20 +9,20 @@
 
 class Config {
 
-	/**
+   /**
    * AZPay URL
    *
    * @var string
    */
-	public static $RECEIVER_URL = 'https://api.azpay.com.br/v1/receiver/';
+   public static $RECEIVER_URL = 'https://api.azpay.com.br/v1/receiver/';
 
 
-	/**
+   /**
    * AZPay Version
    *
    * @var string
    */
-  public static $AZPAY_VERSION = '1.0.0';
+   public static $AZPAY_VERSION = '1.0.0';
 
 
   /**
@@ -34,7 +34,7 @@ class Config {
     'mastercard'  => 'MasterCard',
     'amex'        => 'Amex',
     'elo'         => 'Elo',
-    'dinners'     => 'Dinners',
+    'diners'      => 'Diners',
     'discover'    => 'Discover',
     'jcb'         => 'JCB',
     'aura'        => 'Aura'
@@ -59,7 +59,7 @@ class Config {
         'mastercard',
         'amex',
         'elo',
-        'dinners',
+        'diners',
         'discover',
         'jcb',
         'aura'
