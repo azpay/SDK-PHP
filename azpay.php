@@ -447,11 +447,11 @@ class AZPay {
             case self::SALE:
                 return $obfuscated->sale()->getXml();
             case self::CAPTURE:
-                return $obfuscated->capture()->getXml();
+                return $obfuscated->getXml();
             case self::REPORT:
-                return $obfuscated->report()->getXml();
+                return $obfuscated->getXml();
             case self::CANCEL:
-                return $obfuscated->cancel()->getXml();
+                return $obfuscated->getXml();
             case self::BOLETO:
                 return $obfuscated->boleto()->getXml();
             case self::PAGSEGURO:
