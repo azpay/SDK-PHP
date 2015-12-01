@@ -18,7 +18,7 @@ class AZPay {
     /**
      * VERSION
      */
-    const VERSION = '1.2.8';
+    const VERSION = '1.2.9';
 
     /**
      * Actions
@@ -858,6 +858,32 @@ class AZPay {
 
     }
 
+
+
+    /**
+     * Return the First Rebill
+     * used to check status e save log
+     *
+     * Can use AZPay_Rebill_Exception to handle each recurrence
+     * 
+     * @return [type] [description]
+     */
+    public function getFirstRebill() {
+
+        $response = $this->response();
+        $r = $response->processor->payments->payment[0];
+
+        if (property_exists($response, 'processor') &&
+            property_exists($response->processor, 'payments') &&
+            property_exists($response->processor->payments, 'payment') &&
+            is_array($response->processor->payments->payment) && 
+            isset($response->processor->payments->payment[0])
+            )
+            return $response->processor->payments->payment[0];
+
+        return false;
+    }
+
 }
 
 
@@ -885,6 +911,7 @@ class AZPay_Gone extends AZPay_Client_Exception {}
 class AZPay_InvalidRecord extends AZPay_Client_Exception {}
 class AZPay_ServerError extends AZPay_Client_Exception {}
 class AZPay_UnknownResponse extends AZPay_Client_Exception {}
+class AZPay_Rebill_Exception extends AZPay_Client_Exception {}
 
 /**
  * cUrl Exceptions
