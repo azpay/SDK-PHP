@@ -871,15 +871,13 @@ class AZPay {
     public function getFirstRebill() {
 
         $response = $this->response();
-        $r = $response->processor->payments->payment[0];
 
         if (property_exists($response, 'processor') &&
             property_exists($response->processor, 'payments') &&
             property_exists($response->processor->payments, 'payment') &&
-            is_array($response->processor->payments->payment) && 
-            isset($response->processor->payments->payment[0])
+            isset($response->processor->payments->payment)
             )
-            return $response->processor->payments->payment[0];
+            return $response->processor->payments->payment;
 
         return false;
     }
