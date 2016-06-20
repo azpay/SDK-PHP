@@ -319,6 +319,8 @@ class AZPay {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->curl_timeout);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
         $this->curl_response = curl_exec($ch);
         $this->curl_response_meta = curl_getinfo($ch);
@@ -865,7 +867,7 @@ class AZPay {
      * used to check status e save log
      *
      * Can use AZPay_Rebill_Exception to handle each recurrence
-     * 
+     *
      * @return [type] [description]
      */
     public function getFirstRebill() {
