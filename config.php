@@ -94,6 +94,24 @@ class Config {
         'visa',
         'mastercard'
       )
+    ),
+
+    'bin' => array(
+      'code' => '25',
+      'name' => 'BIN',
+      'flags' => array(
+        'visa',
+        'mastercard'
+      )
+    ),
+
+    'global' => array(
+      'code' => '24',
+      'name' => 'Global Payments',
+      'flags' => array(
+        'visa',
+        'mastercard'
+      )
     )
   );
 
@@ -197,7 +215,7 @@ class Config {
 
   /**
    * Response messages by status code
-   * 
+   *
    * @var array
    */
   public static $STATUS_MESSAGES = array(
@@ -274,7 +292,7 @@ class Config {
 
   /**
    * Period options to Rebill
-   * 
+   *
    * @var array
    */
   public static $REBILL_PERIOD = array(
